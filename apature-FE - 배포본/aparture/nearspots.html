@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>틈</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+
+        <!--메타태그 설정-->
+        <meta property="og:title" content="틈"/>
+        <meta property="og:description" content="일상에 틈을 찾다"/>
+        <meta property="og:image" content="../ogImage.png"/>
+
+        <!--파비콘(주소창 아이콘) 적용-->
+        <link rel="shortcut icon" href="../favicon.ico"/>
+
+        <!--bootstrap cdn-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+              crossorigin="anonymous">
+
+        <!--jquery cdn-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+        <!--slick cdn-->
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+
+        <!--fontawesome cdn-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+              integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+
+        <!--css 불러오기-->
+        <link rel="stylesheet" href="css/public.css"/>
+        <link rel="stylesheet" href="css/listStyle.css"/>
+        <link rel="stylesheet" href="css/loading.css"/>
+
+        <!--js 불러오기-->
+        <script type="text/javascript" src="js/nearspotsScript.js"></script>
+        <script type="text/javascript" src="js/logoutScript.js"></script>
+        <script type="text/javascript" src="js/modalProfile.js"></script>
+        <script type="text/javascript" src="js/nav.js"></script>
+        <script type="text/javascript" src="js/ajaxPreFilter.js"></script>
+
+        <!--스크립트 불러오기-->
+        <script>
+            let perPage2 = "15";
+
+            $(document).ready(function () {
+                geoInfoList(perPage2);
+                $("#perPagingSelect2").change(function () {
+                    perPage2 = $(this).val();
+                    geoInfoList(perPage2)
+                })
+                navLoginCheck();
+            });
+        </script>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html" style="color: #000">틈</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="themes.html">Themes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="nearspots.html">NearSpots</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="reviews.html">Reviews</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav" id="login-btn" style="display: none;">
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.html">
+                                로그인
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav d-flex">
+                        <li class="nav-item dropdown" id="profile-btn" style="display: none;">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Profile
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                       data-bs-target="#profile_modal"
+                                       data-bs-whatever="@mdo">프로필 설정</a></li>
+                                <li><a class="dropdown-item" href="bookmarks.html">관심장소</a></li>
+                                <li><a class="dropdown-item" href="javascript:logoutScript()">로그아웃</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="sort">
+            <div>
+                <a id="trip" href="javascript:checkType(12, perPage2)" style="text-decoration: none;">가볼만한 장소</a>
+                <span> &nbsp; | &nbsp;</span>
+                <a id="food" href="javascript:checkType(39, perPage2)" style="text-decoration: none;">음식점</a>
+                <span> &nbsp; | &nbsp;</span>
+                <a id="accommodation" href="javascript:checkType(32, perPage2)" style="text-decoration: none;">숙박</a>
+                <span> &nbsp; | &nbsp;</span>
+                <a id="festival" href="javascript:checkType(15, perPage2)" style="text-decoration: none;">축제공연행사</a>
+            </div>
+            <select style="width: 70px; margin: 5px 0;" id="perPagingSelect2">
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+            </select>
+        </div>
+        
+        
+        <div class="before-render" style="width: 100%; height: 100vh;">
+            <div id="container-box">
+                <div id="dot"></div>
+                <div class="step" id="s1"></div>
+                <div class="step" id="s2"></div>
+                <div class="step" id="s3"></div>
+            </div>
+        </div>
+        
+        <ul id="near_card" class="cards">
+        </ul>
+        
+        <!-- 모달 창 -->
+        <div class="modal fade" id="profile_modal" tabindex="-1" aria-labelledby="profile_modal_label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="profile_modal_label">프로필 설정</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="modal_nickname" class="col-form-label">닉네임 :</label>
+                                <input type="text" class="form-control" id="modal_nickname" placeholder="사용하실 닉네임을 입력해주세요">
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_img" class="col-form-label">프로필 사진 :</label>
+                                <input type="file" class="form-control" id="modal_img">
+                            </div>
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="deleteUser()">회원 탈퇴하기</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary" onclick="saveProfile()">저장</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Site footer -->
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <h6>About</h6>
+                        <p class="text-justify">틈
+                            <br> 페이지 내 관광 정보는 한국 관광공사의 Tour API에서 제공되는 정보를 바탕으로 만들었습니다. (출처: 한국관광공사 API:국문 관광정보 서비스)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+        <!--bootstrap popper js-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+        
+        <!--bootstrap js-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+                crossorigin="anonymous"></script>
+        
+        <!--slick js-->
+        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+        
+    </body>
+
+    <!-- Footer Template
+    Copyright (c) 2021 by scanfcode (https://codepen.io/scanfcode/pen/MEZPNd)
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    -->
+</html>
